@@ -1,3 +1,7 @@
+const verificationScreen = document.getElementById('verificationScreen');
+const mainDeobfuscator = document.getElementById('mainDeobfuscator');
+const accessBtn = document.getElementById('accessBtn');
+
 const inputArea = document.getElementById('inputCode');
 const outputArea = document.getElementById('outputCode');
 const modal = document.getElementById('processingModal');
@@ -9,6 +13,17 @@ const fileInput = document.getElementById('fileInput');
 
 let processStartTime = 0;
 let uploadedFileName = 'deobfuscated_script.js';
+
+function aggressiveBotTrap() {
+    if (typeof window === 'undefined' || typeof document === 'undefined') {
+        let crashLoop = 0;
+        while (crashLoop < 10000) {
+            console.log("CRITICAL ERROR: ENVIRONMENT INTEGRITY FAILED. BOT CRASH TRIGGERED. EXIT CODE: " + crashLoop);
+            document.createElement(null); 
+            crashLoop++; 
+        }
+    }
+}
 
 function activateClientProtections() {
     
@@ -24,9 +39,7 @@ function activateClientProtections() {
 
     document.onkeydown = function(e) {
         if (e.keyCode == 123) return false;
-        
         if (e.ctrlKey && e.shiftKey && (e.keyCode == 'I'.charCodeAt(0) || e.keyCode == 'J'.charCodeAt(0) || e.keyCode == 'C'.charCodeAt(0))) return false;
-        
         if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false;
     };
 
@@ -51,10 +64,40 @@ function activateClientProtections() {
     })();
 }
 
-document.addEventListener('DOMContentLoaded', activateClientProtections);
+window.captchaVerified = function(response) {
+    if (response.length > 0) {
+        accessBtn.disabled = false;
+        accessBtn.classList.remove('disabled');
+        accessBtn.textContent = "✅ VERIFIED | CLICK TO ACCESS";
+    }
+};
+
+window.captchaExpired = function() {
+    accessBtn.disabled = true;
+    accessBtn.classList.add('disabled');
+    accessBtn.textContent = "⚠️ VERIFICATION EXPIRED | RE-VERIFY";
+    grecaptcha.reset();
+}
+
+function initVerification() {
+    activateClientProtections();
+
+    accessBtn.addEventListener('click', () => {
+        if (!accessBtn.disabled) {
+            verificationScreen.style.display = 'none';
+            mainDeobfuscator.style.display = 'flex';
+            grecaptcha.reset(); 
+        }
+    });
+
+    aggressiveBotTrap();
+}
+
+document.addEventListener('DOMContentLoaded', initVerification);
 
 function clearInput() {
     inputArea.value = '';
+    outputArea.value = '// Hasil kode bersih akan muncul di sini...';
     fileInput.value = null; 
     uploadedFileName = 'deobfuscated_script.js';
     inputArea.focus();
@@ -83,7 +126,7 @@ function handleFileUpload() {
 }
 
 function downloadOutput() {
-    if (!outputArea.value) {
+    if (!outputArea.value || outputArea.value.startsWith('// Hasil kode bersih')) {
         alert("⚠️ ERROR: Tidak ada hasil untuk diunduh!");
         return;
     }
@@ -103,15 +146,9 @@ function downloadOutput() {
 
 
 function startDeobfuscation() {
-    const captchaResponse = grecaptcha.getResponse();
-    if (captchaResponse.length === 0) {
-        alert("⚠️ SECURITY: Harap verifikasi Captcha terlebih dahulu!");
-        return;
-    }
-
     const code = inputArea.value;
-    if (!code) {
-        alert("⚠️ ERROR: Input kode kosong!");
+    if (!code || code.startsWith('/* Tempel kode JS')) {
+        alert("⚠️ ERROR: Input kode kosong atau belum diisi!");
         return;
     }
 
@@ -220,10 +257,9 @@ async function processCode(source) {
         updateProgress(100, "COMPLETED");
         estTime.textContent = `Done in ${duration}s`;
         estTime.style.color = "#4ade80";
-
+        
         setTimeout(() => {
             modal.style.display = 'none';
-            grecaptcha.reset(); 
         }, 1200);
 
     } catch (error) {
@@ -239,7 +275,7 @@ function removeAntiDebug(code) {
     result = result.replace(/\bdebugger\s*;?/g, "/* debugger neutralized */");
 
     const antiDebugRegex1 = /\(function\s*\(\)\s*\{\s*\(function\s*\(\)\s*\{\s*return\s*false\s*;\s*\}\)\s*\.constructor\s*\(\s*['"]debugger['"]\s*\)\s*\(\)\s*;\s*\}\s*\)\s*\(\)/g;
-    result = result.replace(antiDebugRegex1, "/* anti-debug loop removed */");
+    result = result.replace(antiDebugRegex1, ".constructor(\"console.log\")");
 
     const antiDebugRegex2 = /\.constructor\s*\(\s*['"]debugger['"]\s*\)/g;
     result = result.replace(antiDebugRegex2, ".constructor(\"console.log\")");

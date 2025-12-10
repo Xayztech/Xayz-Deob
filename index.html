@@ -38,7 +38,33 @@
         </div>
     </div>
 
-    <div class="main-container">
+    <div id="verificationScreen" class="main-container verification-mode">
+        <header>
+            <div class="header-left">
+                <h1>XAYZ <span class="gradient-text">DECODER</span></h1>
+                <p class="subtitle">SECURITY CHECKPOINT</p>
+            </div>
+            <div class="header-right">
+                <div class="status-badge status-red">
+                    <div class="dot-pulse"></div>
+                    ACCESS DENIED
+                </div>
+            </div>
+        </header>
+
+        <div class="verification-box">
+            <h2>⚠️ VERIFIKASI KEAMANAN</h2>
+            <p>Sistem ini dilindungi dari bot. Harap verifikasi diri Anda untuk melanjutkan.</p>
+            <div class="captcha-container">
+                <div class="g-recaptcha" data-sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI" data-callback="captchaVerified" data-expired-callback="captchaExpired"></div>
+            </div>
+            <button id="accessBtn" class="deobfuscate-btn disabled" disabled>
+                ➡️ VERIFY AND ACCESS DECODER
+            </button>
+        </div>
+    </div>
+
+    <div id="mainDeobfuscator" class="main-container" style="display: none;">
         
         <header>
             <div class="header-left">
@@ -46,16 +72,12 @@
                 <p class="subtitle">HIGH PERFORMANCE JS DEOBFUSCATOR</p>
             </div>
             <div class="header-right">
-                <div class="status-badge">
+                <div class="status-badge status-green">
                     <div class="dot-pulse"></div>
                     READY TO DECRYPT
                 </div>
             </div>
         </header>
-
-        <div class="captcha-container">
-            <div class="g-recaptcha" data-sitekey="6LeHwiYsAAAAAMD9HGQN9AHW0rc349S52iMCeGnF"></div>
-        </div>
 
         <div class="grid-layout">
             
@@ -71,14 +93,13 @@
                 <div class="editor-box">
                     <textarea id="inputCode" placeholder="/* Tempel kode JS yang di-enc di sini atau gunakan tombol UPLOAD... */" spellcheck="false"></textarea>
                 </div>
+                
+                <button onclick="startDeobfuscation()" class="deobfuscate-btn">
+                    ⚡ DEOBFUSCATE CODE ⚡
+                </button>
             </div>
 
             <div class="panel output-panel">
-                
-                <button onclick="startDeobfuscation()" id="magicBtn" class="magic-btn">
-                    🪄
-                </button>
-
                 <div class="panel-header">
                     <span class="panel-title-green">✅ CLEAN RESULT</span>
                     <button onclick="downloadOutput()" class="btn-download">⬇️ DOWNLOAD .JS</button>
@@ -86,8 +107,6 @@
                 <div class="editor-box result-box">
                     <textarea id="outputCode" placeholder="// Hasil kode bersih akan muncul di sini..." readonly spellcheck="false"></textarea>
                 </div>
-
-                <button onclick="startDeobfuscation()" class="mobile-btn">DECRYPT NOW</button>
             </div>
 
         </div>
