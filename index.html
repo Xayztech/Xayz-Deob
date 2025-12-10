@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XAYZ DECODER - High Performance</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.14.7/beautify.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.14.7/beautify-css.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.14.7/beautify-html.min.js"></script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+</head>
+<body>
+
+    <div class="bg-noise"></div>
+    <div class="bg-glow-top"></div>
+    <div class="bg-glow-bottom"></div>
+
+    <div id="processingModal" class="modal-overlay" style="display: none;">
+        <div class="modal-box">
+            <div class="scanline"></div>
+            <div class="modal-header">
+                <div class="status-col">
+                    <span class="status-label">SYSTEM STATUS</span>
+                    <h3 class="status-value"><span class="spin-icon">⚙️</span> PROCESSING</h3>
+                </div>
+                <span id="progressText" class="progress-percent">0%</span>
+            </div>
+            
+            <div class="progress-track">
+                <div id="progressBar" class="progress-fill"></div>
+            </div>
+
+            <div class="modal-footer">
+                <span id="statusLog">INITIALIZING...</span>
+                <span id="estTime">Est: 0.0s</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-container">
+        
+        <header>
+            <div class="header-left">
+                <h1>XAYZ <span class="gradient-text">DECODER</span></h1>
+                <p class="subtitle">HIGH PERFORMANCE JS DEOBFUSCATOR</p>
+            </div>
+            <div class="header-right">
+                <div class="status-badge">
+                    <div class="dot-pulse"></div>
+                    READY TO DECRYPT
+                </div>
+            </div>
+        </header>
+
+        <div class="captcha-container">
+            <div class="g-recaptcha" data-sitekey="6LeHwiYsAAAAAMD9HGQN9AHW0rc349S52iMCeGnF"></div>
+        </div>
+
+        <div class="grid-layout">
+            
+            <div class="panel input-panel">
+                <div class="panel-header">
+                    <span class="panel-title">📂 ENCRYPTED SOURCE</span>
+                    <div class="action-group">
+                        <label for="fileInput" class="btn-upload">⬆️ UPLOAD .JS</label>
+                        <input type="file" id="fileInput" accept=".js" style="display: none;" onchange="handleFileUpload()">
+                        <button onclick="clearInput()" class="btn-clear">🗑️ CLEAR</button>
+                    </div>
+                </div>
+                <div class="editor-box">
+                    <textarea id="inputCode" placeholder="/* Tempel kode JS yang di-enc di sini atau gunakan tombol UPLOAD... */" spellcheck="false"></textarea>
+                </div>
+            </div>
+
+            <div class="panel output-panel">
+                
+                <button onclick="startDeobfuscation()" id="magicBtn" class="magic-btn">
+                    🪄
+                </button>
+
+                <div class="panel-header">
+                    <span class="panel-title-green">✅ CLEAN RESULT</span>
+                    <button onclick="downloadOutput()" class="btn-download">⬇️ DOWNLOAD .JS</button>
+                </div>
+                <div class="editor-box result-box">
+                    <textarea id="outputCode" placeholder="// Hasil kode bersih akan muncul di sini..." readonly spellcheck="false"></textarea>
+                </div>
+
+                <button onclick="startDeobfuscation()" class="mobile-btn">DECRYPT NOW</button>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

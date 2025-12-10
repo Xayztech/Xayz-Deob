@@ -1,0 +1,21 @@
+{
+  "name": "Xayz Deob",
+  "version": "3.5.0",
+  "description": "Created And Developer By: @XYCoolcraft",
+  "main": "index.html",
+  "scripts": {
+    "start": "lite-server"
+  },
+  "keywords": [
+    "deobfuscator",
+    "javascript",
+    "unpacker",
+    "security",
+    "decoder"
+  ],
+  "author": "XYCoolcraft",
+  "license": "ISC",
+  "devDependencies": {
+    "lite-server": "^2.6.1"
+  }
+}
